@@ -37,8 +37,22 @@ const MORSE_TABLE = {
     '-----':  '0',
 };
 
+let morseTableOnCoded = Object.entries(MORSE_TABLE).map((item) => {
+    item[0] = item[0].replace(/\./g, '10').replace(/-/g, '11');
+    while (item[0].length < 10) {
+        item[0] = `0${item[0]}`;
+    }
+    return item;
+});
+let morseTableForDecoding = Object.fromEntries(morseTableOnCoded);
+morseTableForDecoding['**********'] = ' ';
+
+
 function decode(expr) {
-    // write your solution here
+    let exprArray = expr.match(/.{1,10}/g);
+    return exprArray.reduce((acc, current) => {
+        return acc + morseTableForDecoding[current]
+    }, ``);
 }
 
 module.exports = {
